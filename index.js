@@ -92,7 +92,6 @@ function displayResults(responseJson) {
             </a>
         </li>`
       )};
-    //display the results section  
     $('#results').removeClass('hidden');
 }
 
@@ -109,10 +108,10 @@ function getParks(query, maxResults=10, state) {
   
     fetch(url)
       .then(response => {
-        if (response.ok) {
-          return response.json();
+        if (response) {
+            return response.json();
         }
-        throw new Error(response.statusText);
+            throw new Error(response.message);
       })
       .then(responseJson => displayResults(responseJson))
       .catch(err => {
