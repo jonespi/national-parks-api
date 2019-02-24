@@ -109,19 +109,20 @@ function getParks(query, maxResults=10, state) {
       .then(responseJson => {
         if ((responseJson.data).length !== 0) {
           displayResults(responseJson, maxResults);
-          $('#js-error-message').addClass('hidden');
+          $('#js-error-message').empty();
         } else {
-          generateErrorMessage();
+          generateErrorMessage(query);
+          console.log('error message');
         }
       })
       .catch(err => {
-        generateErrorMessage();
+        generateErrorMessage(err);
       });
 }
 
-function generateErrorMessage() {
+function generateErrorMessage(query) {
+  $('#js-error-message').text(`Something went wrong: no results for ${query}`);
   $('#results-list').empty();
-  $('#js-error-message').text(`Something went wrong: ${err.message}`);
 }
 
 function watchForm() {
