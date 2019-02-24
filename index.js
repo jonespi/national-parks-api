@@ -115,11 +115,12 @@ function getParks(query, maxResults=10, state) {
         }
       })
       .catch(err => {
-        $('#js-error-message').text(`Something went wrong: ${err.message}`);
+        generateErrorMessage();
       });
 }
 
 function generateErrorMessage() {
+  $('#results-list').empty();
   $('#js-error-message').text(`Something went wrong: ${err.message}`);
 }
 
