@@ -78,21 +78,25 @@ function formatQueryParams(params) {
 }
 
 function displayResults(responseJson, maxResults) {
-    $('#results-list').empty();
-    console.log(responseJson);
-    for (let i = 0; i < maxResults; i++){
-      $('#results-list').append(
-        `<li>
-            <a href='${responseJson.data[i].url}'>
-                <h3>${responseJson.data[i].name}</h3>
-            </a>
-            <p>${responseJson.data[i].description}</p>
-            <a href='${responseJson.data[i].url}'>
-                <p>${responseJson.data[i].url}</p>
-            </a>
-        </li>`
-      )};
+  $('#results-list').empty();
+  console.log(responseJson);
+  if (responseJson.data.length < maxResults) {
+    maxResults = responseJson.data.length;
+  }
+  for (let i = 0; i < maxResults; i++){
+    $('#results-list').append(
+      `<li>
+          <a href='${responseJson.data[i].url}'>
+              <h3>${responseJson.data[i].name}</h3>
+          </a>
+          <p>${responseJson.data[i].description}</p>
+          <a href='${responseJson.data[i].url}'>
+              <p>${responseJson.data[i].url}</p>
+          </a>
+      </li>`
+    );
     $('#results').removeClass('hidden');
+  }
 }
 
 function getParks(query, maxResults=10, state) {
