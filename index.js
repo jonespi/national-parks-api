@@ -104,15 +104,14 @@ function getParks(query, maxResults=10, state) {
     const queryString = formatQueryParams(params)
     const url = searchURL + '?' + queryString;
   
-    console.log(url);
-  
     fetch(url)
       .then(response => response.json())
       .then(responseJson => {
         if ((responseJson.data).length !== 0) {
-          return displayResults(responseJson, maxResults);
+          displayResults(responseJson, maxResults);
+          $('#js-error-message').addClass('hidden');
         } else {
-          return generateErrorMessage();
+          generateErrorMessage();
         }
       })
       .catch(err => {
