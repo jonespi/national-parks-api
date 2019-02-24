@@ -64,7 +64,7 @@ for(let i = 0;i<usStates.length;i++){
     let option = document.createElement("option");
     option.text = usStates[i].abbreviation;
     option.value = i;
-    var select = document.getElementById("state");
+    let select = document.getElementById("state");
     select.appendChild(option);
 }
 
@@ -77,10 +77,10 @@ function formatQueryParams(params) {
     return queryItems.join('&');
 }
 
-function displayResults(responseJson) {
+function displayResults(responseJson, maxResults) {
     $('#results-list').empty();
     console.log(responseJson);
-    for (let i = 0; i < responseJson.data.length; i++){
+    for (let i = 0; i < maxResults; i++){
       $('#results-list').append(
         `<li>
             <a href='${responseJson.data[i].url}'>
@@ -107,18 +107,23 @@ function getParks(query, maxResults=10, state) {
     console.log(url);
   
     fetch(url)
-      .then(response => {
-        if (response) {
-            return response.json();
+      .then(response => response.json())
+      .then(responseJson => {
+        if ((responseJson.data).length !== 0) {
+          return displayResults(responseJson, maxResults);
+        } else {
+          return generateErrorMessage();
         }
-            throw new Error(response.message);
       })
-      .then(responseJson => displayResults(responseJson))
       .catch(err => {
         $('#js-error-message').text(`Something went wrong: ${err.message}`);
       });
 }
-  
+
+function generateErrorMessage() {
+  $('#js-error-message').text(`Something went wrong: ${err.message}`);
+}
+
 function watchForm() {
     $('form').submit(event => {
         event.preventDefault();
