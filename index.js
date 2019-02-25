@@ -64,9 +64,18 @@ for(let i = 0;i<usStates.length;i++){
     let option = document.createElement("option");
     option.text = usStates[i].abbreviation;
     option.value = i;
-    let select = document.getElementById("state");
+    let select = document.getElementById("state1");
     select.appendChild(option);
 }
+
+for(let i = 0;i<usStates.length;i++){
+  let option = document.createElement("option");
+  option.text = usStates[i].abbreviation;
+  option.value = i;
+  let select = document.getElementById("state2");
+  select.appendChild(option);
+}
+
 
 const KEY = 'amqdM5ituE2fRYkxV5NN9Mhll8kzRlq8EDBtrSuj';
 const searchURL = 'https://api.nps.gov/api/v1/parks';
@@ -80,9 +89,8 @@ function formatQueryParams(params) {
 function displayResults(responseJson, maxResults) {
   $('#results-list').empty();
   console.log(responseJson);
-  if (responseJson.data.length < maxResults) {
-    maxResults = responseJson.data.length;
-  }
+  if (responseJson)
+
   for (let i = 0; i < maxResults; i++){
     $('#results-list').append(
       `<li>
@@ -134,7 +142,7 @@ function watchForm() {
         event.preventDefault();
         const searchTerm = $('#js-search-term').val();
         const maxResults = $('#js-max-results').val();
-        const state = $('#state option:selected').text();
+        const state = $('#state1 option:selected').text() + ',' + $('#state2 option:selected').text();
         console.log(state);
         getParks(searchTerm, maxResults, state);
     });
