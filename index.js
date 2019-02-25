@@ -60,37 +60,31 @@ const usStates = [
     { name: 'WYOMING', abbreviation: 'WY' }
 ];
 
-for(let i = 0;i<usStates.length;i++){
-    let option = document.createElement("option");
-    option.text = usStates[i].abbreviation;
-    option.value = i;
-    let select = document.getElementById("state1");
-    select.appendChild(option);
+function createStateSelector() { 
+  for (let i = 0; i<usStates.length; i++) {
+    $('#state').append(`<input type='checkbox' value=${usStates[i].abbreviation}>${usStates[i].name}<br>`)
+  }
 }
-
-for(let i = 0;i<usStates.length;i++){
-  let option = document.createElement("option");
-  option.text = usStates[i].abbreviation;
-  option.value = i;
-  let select = document.getElementById("state2");
-  select.appendChild(option);
-}
-
 
 const KEY = 'amqdM5ituE2fRYkxV5NN9Mhll8kzRlq8EDBtrSuj';
 const searchURL = 'https://api.nps.gov/api/v1/parks';
 
 function formatQueryParams(params) {
-    const queryItems = Object.keys(params)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-    return queryItems.join('&');
+  const queryItems = Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+  return queryItems.join('&');
+}
+
+function mergeCheckedStates() {
+  let checkedStates = [];
+    $(':checkbox:checked').each(function(i) {
+        checkedStates[i] = $(this).val();
+    });
+    state = checkedStates.join(',');  
 }
 
 function displayResults(responseJson, maxResults) {
   $('#results-list').empty();
-  console.log(responseJson);
-  if (responseJson)
-
   for (let i = 0; i < maxResults; i++){
     $('#results-list').append(
       `<li>
@@ -137,15 +131,20 @@ function generateErrorMessage(query) {
   $('#results-list').empty();
 }
 
-function watchForm() {
-    $('form').submit(event => {
-        event.preventDefault();
-        const searchTerm = $('#js-search-term').val();
-        const maxResults = $('#js-max-results').val();
-        const state = $('#state1 option:selected').text() + ',' + $('#state2 option:selected').text();
-        console.log(state);
-        getParks(searchTerm, maxResults, state);
-    });
+function searchButtonPress() {
+  $('form').on('click', '#search-button', event => {
+    event.preventDefault();
+    const searchTerm = $('#js-search-term').val();
+    const maxResults = $('#js-max-results').val();
+    mergeCheckedStates();
+    console.log(state);
+    getParks(searchTerm, maxResults, state);
+  });
 }
 
-$(watchForm);
+function runApp() {
+  searchButtonPress();
+  createStateSelector();
+}
+
+$(runApp);
