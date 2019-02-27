@@ -113,6 +113,7 @@ function getParks(query, maxResults=10, state) {
     fetch(url)
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson);
         if ((responseJson.data).length !== 0) {
           displayResults(responseJson, maxResults);
           $('#js-error-message').empty();
