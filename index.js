@@ -85,6 +85,9 @@ function mergeCheckedStates() {
 
 function displayResults(responseJson, maxResults) {
   $('#results-list').empty();
+  if (maxResults > responseJson.data.length) {
+    maxResults = responseJson.data.length;
+  }
   for (let i = 0; i < maxResults; i++){
     $('#results-list').append(
       `<li>
